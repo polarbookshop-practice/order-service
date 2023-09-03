@@ -57,4 +57,19 @@ class BookClientTest {
                 .verifyComplete(); //  Verifies that the reactive stream completed successfully
 
     }
+
+    @Test
+    void whenBookNotExistsThenReturnEmpty() {
+        var bookIsbn = "1234567891";
+
+        var mockResponse = new MockResponse()
+                .addHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                .setResponseCode(404);
+
+        mockWebServer.enqueue(mockResponse);
+
+        StepVerifier.create(bookClient.getBookByIsbn(bookIsbn))
+                .expectNextCount(0)
+                .verifyComplete();
+    }
 }
