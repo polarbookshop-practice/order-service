@@ -27,8 +27,13 @@ public class OrderService {
         this.orderRepository = orderRepository;
     }
 
-    public Flux<Order> getAllOrders() {
-        return orderRepository.findAll();
+    /**
+     * Returns all orders created by a given user
+     * @param userId
+     * @return
+     */
+    public Flux<Order> getAllOrders(String userId) {
+        return orderRepository.findAllByCreatedBy(userId);
     }
 
     @Transactional
@@ -66,6 +71,8 @@ public class OrderService {
                 OrderStatus.DISPATCHED,
                 existingOrder.createdDate(),
                 existingOrder.lastModifiedDate(),
+                existingOrder.createdBy(),
+                existingOrder.lastModifiedBy(),
                 existingOrder.version()
         );
     }
