@@ -25,6 +25,7 @@ ext {
     set('springCloudVersion', "2021.0.3")
     set('testcontainersVersion', "1.18.3")
     set('testKeycloakVersion', "2.3.0")
+    set('otelVersion', "1.17.0")
 }
 
 dependencies {
@@ -61,6 +62,7 @@ dependencies {
     testImplementation 'org.testcontainers:junit-jupiter'
     // Provides Keycloak testing utilities on top of Testcontainers
     testImplementation "com.github.dasniko:testcontainers-keycloak:${testKeycloakVersion}"
+    runtimeOnly "io.opentelemetry.javaagent:opentelemetry-javaagent:${otelVersion}"
 }
 
 dependencyManagement {
@@ -85,4 +87,7 @@ bootBuildImage {
 
 tasks.named('test') {
     useJUnitPlatform()
+}
+springBoot {
+    buildInfo()
 }
